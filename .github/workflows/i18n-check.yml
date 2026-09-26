@@ -1,0 +1,25 @@
+name: Kiểm tra bản Việt hóa PyGeo
+
+on:
+  pull_request:
+  push:
+    branches:
+      - gh-pages
+      - "i18n/**"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Kiểm tra bài học và Notebook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tải mã nguồn
+        uses: actions/checkout@v4
+      - name: Cài đặt Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Kiểm tra cấu trúc và liên kết
+        run: python scripts/check_i18n.py

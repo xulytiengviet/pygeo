@@ -1,66 +1,102 @@
 ---
 layout: default
+title: "Bài 1 — Nhập môn và cài đặt"
+description: Cài đặt Python, JupyterLab và tạo biểu đồ đầu tiên.
 ---
 
-# Day 1
+# Bài 1 — Nhập môn và cài đặt
 
-Today we will do introductions, get our software environment set up, and make our first plot!
+Trong buổi đầu, chúng ta làm quen với khóa học, thiết lập môi trường làm việc và tạo biểu đồ đầu tiên bằng Python.
 
-## Overview
-The course description is,
-> Techniques for handling, analysing and presenting data in Earth Sciences using Python. Students will use real-world data provided to them or from their own research. The analysis component will include standard techniques such as correlations, power spectra, regridding and curve-fitting.
-The plan is to have you feel confident to make publication-ready figures in Python with your own data. 
+## Tổng quan
 
-## Installations
+Giáo trình tập trung vào các kỹ thuật **xử lý, phân tích và trình bày dữ liệu khoa học Trái Đất bằng Python**. Người học sử dụng dữ liệu thực tế được cung cấp hoặc bộ dữ liệu trong nghiên cứu của chính mình. Những nội dung chính gồm phân tích tương quan, phổ công suất, tái lập lưới và khớp đường cong.
+
+Mục tiêu cuối cùng là giúp bạn tự tin tạo các hình minh họa đạt chất lượng công bố khoa học từ dữ liệu riêng, đồng thời lưu lại quy trình phân tích để người khác có thể tái lập kết quả.
+
+## Chuẩn bị phần mềm
 
 ### Python
-Python is the coding language we'll use in this intensive; some computers come with Python on them, others don't.
 
-[https://www.python.org/downloads/](https://www.python.org/downloads/)
+Python là ngôn ngữ lập trình sử dụng xuyên suốt khóa học. Tải phiên bản phù hợp với hệ điều hành từ [trang chính thức của Python](https://www.python.org/downloads/). Trên Windows, hãy đánh dấu tùy chọn thêm Python vào PATH nếu trình cài đặt cung cấp.
 
-### pip
-Pip is software that allows you to install Python packages easily; we need to install it.
+Kiểm tra cài đặt trong Terminal hoặc PowerShell:
 
-[https://pip.pypa.io/en/stable/installation/](https://pip.pypa.io/en/stable/installation/)
+~~~bash
+python --version
+~~~
 
-### Jupyter Labs
-Jupyter Labs is a console we use to code; we need to install it.
+### pip — Trình quản lý gói
 
-[https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html](https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html)
-```
-pip install jupyterlab
-```
+<code>pip</code> giúp cài đặt và cập nhật thư viện Python. Phần lớn bản cài Python hiện nay đã bao gồm pip. Kiểm tra bằng:
 
-### NumPy
-NumPy is a Python package that lets us do maths; we need to install it.
+~~~bash
+python -m pip --version
+~~~
 
-[https://numpy.org/install/](https://numpy.org/install/)
-```
-pip install numpy
-```
+Nếu chưa có pip, xem [hướng dẫn cài đặt chính thức](https://pip.pypa.io/en/stable/installation/).
 
-### pandas
-pandas is a Python package that lets us work with tabulated data; we need to install it.
+### JupyterLab — Môi trường thực hành
 
-[https://pandas.pydata.org/docs/getting_started/install.html](https://pandas.pydata.org/docs/getting_started/install.html)
-```
-pip install pandas
-```
+JupyterLab cho phép viết mã, chạy từng ô lệnh, xem biểu đồ và ghi chú trong cùng một tệp Notebook.
 
-### matplotlib
-matplotlib is a Python package that lets us plot data; we need to install it.
+~~~bash
+python -m pip install jupyterlab
+~~~
 
-[https://matplotlib.org/stable/users/installing/index.html](https://matplotlib.org/stable/users/installing/index.html)
-```
-pip install matplotlib
-```
+[Tài liệu JupyterLab](https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html)
 
-## First notebook
+### NumPy — Tính toán số
 
-To open Jupyter Labs just type `jupyter-lab` into your terminal. It will open up a console in a tab on your browser.
+NumPy hỗ trợ mảng nhiều chiều, phép toán ma trận và nhiều thao tác tính toán khoa học.
 
-See the first notebook example online [here](https://github.com/geomorphlab/medaes/blob/gh-pages/day1/day1.ipynb). Download it directly [here](./day1/day1.zip).
+~~~bash
+python -m pip install numpy
+~~~
 
-## Homework
+[Tài liệu NumPy](https://numpy.org/install/)
 
-Make an equivalent notebook to the one above where you ingest your own spreadsheet and plot some data from it.
+### pandas — Xử lý bảng dữ liệu
+
+pandas giúp đọc, lọc, biến đổi và tổng hợp dữ liệu dạng bảng như CSV và Excel.
+
+~~~bash
+python -m pip install pandas
+~~~
+
+[Tài liệu pandas](https://pandas.pydata.org/docs/getting_started/install.html)
+
+### Matplotlib — Trực quan hóa
+
+Matplotlib hỗ trợ biểu đồ đường, phân tán, bản đồ raster và những hình minh họa phức hợp.
+
+~~~bash
+python -m pip install matplotlib
+~~~
+
+[Tài liệu Matplotlib](https://matplotlib.org/stable/users/installing/index.html)
+
+> **Gợi ý:** Có thể cài các gói thực hành cơ bản bằng một lệnh: <code>python -m pip install jupyterlab numpy pandas matplotlib</code>. Với dự án nghiên cứu, nên sử dụng môi trường ảo để tránh xung đột thư viện.
+
+## Notebook thực hành số 1
+
+Mở JupyterLab bằng lệnh:
+
+~~~bash
+jupyter lab
+~~~
+
+Trình duyệt sẽ mở giao diện JupyterLab. Bạn có thể tạo Notebook mới hoặc mở ví dụ của bài này:
+
+- [Xem Notebook bài 1 trong kho PyGeo](https://github.com/xulytiengviet/pygeo/blob/gh-pages/day1/day1.ipynb).
+- [Tải bộ Notebook và dữ liệu mẫu gốc](./day1/day1.zip).
+
+Notebook giới thiệu cách nạp thư viện, khai báo hàm và hằng số, đọc dữ liệu, phân tích và trực quan hóa.
+
+## Bài tập tự luyện
+
+Tạo một Notebook tương tự, nhưng **đọc bảng dữ liệu của chính bạn** và vẽ ít nhất một biểu đồ thể hiện mối quan hệ giữa các biến. Lưu lại mã nguồn, biểu đồ và nguồn dữ liệu để có thể chạy lại.
+
+---
+
+**Bài tiếp theo:** [Bài 2 — Đọc và xử lý dữ liệu](./day2.html).

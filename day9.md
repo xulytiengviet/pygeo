@@ -1,34 +1,82 @@
 ---
 layout: default
+title: "Bài 9 — GitHub, Zenodo và DOI"
+description: Quản lý phiên bản và công bố mã nguồn, dữ liệu nghiên cứu có DOI.
 ---
 
-# Day 9
+# Bài 9 — Công bố mã nguồn và dữ liệu có DOI
 
-Today we will look at how to make a DOI-minted code and data repository!
+Sau khi hoàn thiện quy trình phân tích, chúng ta học cách lưu trữ mã nguồn, quản lý phiên bản và cấp **mã định danh đối tượng số (DOI)** để người khác có thể truy cập, kiểm tra và trích dẫn kết quả nghiên cứu.
 
-## GitHub
+## 1. Git và GitHub
 
-[GitHub](https://github.com/) is an incredibly useful website that allows people who write code and develop software to share what they have done and work on it collaboratively. Projects are held in 'repositories' and can be public or private. A lot of the software we use in our day-to-day lives, including the Python packages we've used all workshop and even this workshop website, are created using GitHub! GitHub uses software called [Git](https://en.wikipedia.org/wiki/Git) to keep tabs on what is in directories and files, and if those things change.
+[GitHub](https://github.com/) là nền tảng lưu trữ kho mã nguồn và cộng tác phát triển. Các dự án được tổ chức thành **repository**, có thể công khai hoặc riêng tư. GitHub xây dựng trên [Git](https://git-scm.com/), hệ thống quản lý phiên bản ghi nhận thay đổi của tệp và thư mục.
 
-Today we will tell Git to keep tabs on a directory on our local computer where our project is. We will then create a GitHub repository for it, so anyone can see the most recent upload we made. Once this is done, we can create a 'version' (i.e., what the repository looked like at a moment in time) of the repository. Then finally we can make a DOI for the version with Zenodo.
+Trong buổi học này, chúng ta sẽ:
 
-Before we start this process, we need to organise our project directory. Make sure all your code and code output is in one directory that you can navigate to via terminal. If your data contains any files over 50 MB, make sure to store your data in a child directory of the project directory, and all the code in a seperate child directory. Ideally you wouldn't have to do this, but GitHub has a 50 MB limit on any given file's size.
+1. Tập hợp mã nguồn, dữ liệu đầu vào, môi trường và hình đầu ra của một dự án trong cấu trúc thư mục có thể tái lập.
+2. Thiết lập Git trên máy tính và tạo kho mã nguồn trên GitHub.
+3. Ghi nhận những phiên bản ổn định của dự án bằng commit và release.
+4. Liên kết bản phát hành với Zenodo để lưu trữ lâu dài và cấp DOI.
 
-Next we need to install Git on our computer if we don't have it already. [Here](https://github.com/git-guides/install-git) is a tutorial for installing Git on various operating systems. Then we need to create a GitHub account if we don't have one already. You can do that [here](https://github.com/join). 
+### Tổ chức dự án trước khi công bố
 
-After that, we can follow [this tutorial](https://docs.github.com/en/get-started/importing-your-projects-to-github/importing-source-code-to-github/adding-locally-hosted-code-to-github#adding-a-local-repository-to-github-using-git) to get our local directory uploaded to GitHub as a repository. 
+Gợi ý cấu trúc thư mục:
 
-## Zenodo
+~~~text
+du-an-nghien-cuu/
+├── README.md
+├── requirements.txt
+├── notebooks/
+├── src/
+├── data/
+└── figures/
+~~~
 
-[Zenodo](https://zenodo.org/) is a file sharing website for research. Since Zenodo has the proper infrastructure and policies in place, they are able to issue Digital Object Identifiers (DOIs) to data and code stored on and accessed through the website. 
+Tệp <code>README.md</code> nên trình bày nguồn dữ liệu, cách cài đặt, thứ tự chạy chương trình và kết quả mong đợi. Tài liệu môi trường như <code>requirements.txt</code> giúp tái lập phiên bản thư viện.
 
-[DOIs](https://www.doi.org/) are permanent addresses for digital assets. They are the widely-adopted way we keep track of all published research articles, and since nowadays none of us read publications from a journal's printed issue, they are much more powerful way of referencing published research. Giving your code and data a DOI, in addition to your articles, is one way for other researchers to know exactly how you did your science and it makes them able to cite it if required. In the last few years a lot of journals in Earth Sciences have started requiring that code and data accompanying an article are not only publicly available, but also have a DOI.
+Với bộ dữ liệu lớn, cần kiểm tra giới hạn lưu trữ của GitHub; xem xét Git LFS hoặc kho lưu trữ dữ liệu chuyên dụng thay vì đẩy toàn bộ tệp lớn vào lịch sử Git. Không đưa thông tin cá nhân nhạy cảm, mật khẩu hoặc khóa API vào kho công khai.
 
-We can use Zenodo without GitHub, but since GitHub allows us to easily upload and track changes in our project directory, and Zenodo allows us to give our code a DOI, they work very well together. 
+### Cài đặt và đẩy dự án lên GitHub
 
-Now we have our GitHub repository up and running, we can follow [this guide](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content) to give it a DOI via Zenodo.
+- [Cài đặt Git](https://github.com/git-guides/install-git).
+- [Tạo tài khoản GitHub](https://github.com/signup).
+- [Hướng dẫn thêm dự án có sẵn lên GitHub](https://docs.github.com/en/get-started/importing-your-projects-to-github/importing-source-code-to-github/adding-locally-hosted-code-to-github#adding-a-local-repository-to-github-using-git).
 
+Từ thư mục dự án, có thể bắt đầu như sau:
 
-## Homework
+~~~bash
+git init
+git add .
+git commit -m "Initial research release"
+~~~
 
-Once your project is finalised, create its own GitHub repository, and a DOI for a version of it using Zenodo. Go ahead and work on your own lightning presentations and the extended abstract.
+Tiếp tục thiết lập kho từ xa và đẩy nhánh theo hướng dẫn GitHub. Trước khi chạy <code>git add .</code>, nhớ kiểm tra <code>.gitignore</code> để loại bỏ tệp tạm và dữ liệu không được phép chia sẻ.
+
+## 2. Zenodo và mã DOI
+
+[Zenodo](https://zenodo.org/) là kho lưu trữ mở dành cho dữ liệu, phần mềm và sản phẩm nghiên cứu. Zenodo có khả năng cấp **DOI** cho các bản ghi hoặc phiên bản đã xuất bản.
+
+[DOI](https://www.doi.org/) là mã định danh bền vững giúp tìm, trích dẫn và truy vết phiên bản của tài liệu số. Công bố mã nguồn và dữ liệu với DOI hỗ trợ minh bạch quy trình nghiên cứu và cho phép người khác trích dẫn chính xác tài nguyên đã sử dụng.
+
+### Liên kết GitHub với Zenodo
+
+Khi dự án đã có phiên bản ổn định trên GitHub:
+
+1. Chuẩn bị README, hướng dẫn tái lập kết quả, thông tin tác giả và quyền sử dụng phù hợp.
+2. Đăng nhập Zenodo và bật liên kết tới kho GitHub (nếu sử dụng cơ chế tích hợp).
+3. Tạo **GitHub Release** cho phiên bản muốn lưu trữ.
+4. Kiểm tra bản ghi được Zenodo tiếp nhận, hoàn thiện siêu dữ liệu rồi công bố.
+5. Ghi DOI vào README, báo cáo hoặc bài báo nghiên cứu.
+
+Xem [tài liệu GitHub về trích dẫn nội dung của kho](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content). Cơ chế liên kết, cấp DOI và quy trình xuất bản có thể thay đổi; hãy đối chiếu tài liệu chính thức tại thời điểm thực hiện.
+
+> **Lưu ý về bản quyền và dữ liệu:** Chỉ công bố dữ liệu mà bạn được phép chia sẻ. Với dữ liệu hạn chế truy cập, có thể công bố mã nguồn, siêu dữ liệu hoặc bộ dữ liệu thay thế phù hợp.
+
+## Bài tập tổng kết
+
+Hoàn thiện dự án của bạn, tạo một kho GitHub với hướng dẫn chạy lại phân tích, phát hành phiên bản chính thức và đăng ký DOI thông qua Zenodo. Hoàn thiện bài thuyết trình ngắn và bản tóm tắt mở rộng có hình minh họa tạo bằng Python.
+
+---
+
+**Điều hướng:** [← Bài 8](./day8.html) · [Tổng kết khóa học tại nguồn gốc ↗](https://geomorphlab.github.io/medaes/).
