@@ -1,43 +1,59 @@
 ---
 layout: default
+title: "Bài 4 — Phân tích phổ và FFT"
+description: Phổ công suất, biến đổi Fourier nhanh và mẫu hình không gian.
 ---
 
-# Day 4
+# Bài 4 — Phân tích phổ và FFT
 
-Today we will look at how to plot a power spectrum and use FFTs to find patterns!
+Hôm nay chúng ta sử dụng **phổ công suất** và **biến đổi Fourier nhanh (FFT)** để nhận diện chu kỳ theo thời gian hoặc các cấu trúc lặp theo không gian.
 
-## Power spectra
+## 1. Phổ công suất (power spectrum)
 
-Power spectra are an important tool for understanding what the dominant modes of variability are in a system. They can be used spatially to find out what wavelengths patterns occur on, or temporally to find out what timescales drive a response in a system. We will use the package `scipy` and it's sub-package `signal`, but there are other ways to do this!
+Phổ công suất cho biết năng lượng hoặc phương sai của tín hiệu phân bố theo tần số ra sao. Trong chuỗi thời gian, nó giúp tìm những chu kỳ nổi bật; trong dữ liệu không gian, nó hỗ trợ phát hiện thang kích thước và bước sóng của mẫu hình.
 
-In the notebook, we look at a power spectra for some example data, and we also use linear best fit to produce a powerlaw best fit to a sub-set of frequencies.
+Bài thực hành sử dụng thư viện <code>scipy.signal</code> để tính và trực quan hóa phổ. Từ dữ liệu mẫu, bạn sẽ so sánh phổ gốc, phổ làm trơn và nhận diện dải tần số cần phân tích.
 
-### Power law fit
+### Khớp hàm lũy thừa
 
-We use the power law fit function from yesterday to look at how power decays with increasing frequency for a sub-range in our frequencies. See the notebook for the example.
+Áp dụng kỹ thuật hồi quy từ bài 3 để khảo sát sự thay đổi của phổ công suất theo tần số trong **một khoảng được chọn**. Đồ thị log–log giúp nhận diện quy luật lũy thừa khi dữ liệu phù hợp với giả định đó.
 
-### Peak modes
+### Xác định cực đại phổ
 
-We find the maximum power in a spectra then find the frequency at which that occurs. See the notebook for the example.
+Tìm đỉnh phổ và tần số tại đó công suất đạt giá trị lớn nhất. Khi phân tích chuỗi thời gian, cần xem xét tần suất lấy mẫu, xu thế nền và khả năng xuất hiện các đỉnh giả do nhiễu.
 
-## Spatial patterns
+## 2. Mẫu hình không gian và FFT
 
-Fast Fourier Transforms (FFTs) are also an important tool for understanding what the dominant modes of variability are in a system. They can be used spatially to find out what wavelengths patterns occur on, or temporally to find out what timescales drive a response in a system. We will use the package `numpy` and it's sub-package `fft`, but there are other ways to do this!
+FFT hỗ trợ phân tích các cấu trúc có tính tuần hoàn trong trường dữ liệu không gian hai chiều, ví dụ dữ liệu địa hình.
 
-In the notebook, we look at some topography for some example data, and we also use linear best fit to produce a powerlaw best fit to a sub-set of frequencies.
+Bài thực hành dùng <code>numpy.fft</code> để chuyển từ miền không gian sang miền tần số, sau đó khám phá tự tương quan của trường dữ liệu mẫu.
 
-### 2-D FFT
+### FFT hai chiều
 
-We use a 2-D FFT to find the autocorrelation in some example data with some clear patterns. See the notebook for the example.
+Với raster hai chiều, có thể tính FFT theo cả hàng và cột:
 
-### Peak finding
+~~~python
+import numpy as np
 
-We find the dominant orientation and wavelength of a two-dimensional pattern by analyzing this autocorrelation function. See the notebook for the example.
+pho_2d = np.fft.fft2(raster)
+pho_dich_tam = np.fft.fftshift(pho_2d)
+~~~
 
-## Fourth notebook
+Đoạn trên minh họa thao tác biến đổi; cách tính **hàm tự tương quan** đầy đủ, chuẩn hóa và xử lý giá trị thiếu được trình bày trong Notebook thực hành.
 
-See the fourth notebook example online [here](https://github.com/geomorphlab/medaes/blob/gh-pages/day4/day4.ipynb). Download the directory with the notebook and the example file directly [here](./day4/day4.zip).
+### Hướng và bước sóng trội
 
-## Homework
+Sau khi xác định hàm tự tương quan, chúng ta khảo sát vị trí các cực đại để suy ra hướng ưu thế và bước sóng đặc trưng của mẫu hình hai chiều.
 
-Make an equivalent notebook to the one above where you ingest your own data and plot the power spectra or autcorrelation if it's appropriate. If not, go ahead and work on your own lightning presentations and the extended abstract.
+## Notebook thực hành số 4
+
+- [Xem Notebook bài 4](https://github.com/xulytiengviet/pygeo/blob/gh-pages/day4/day4.ipynb).
+- [Tải dữ liệu và Notebook gốc](./day4/day4.zip).
+
+## Bài tập tự luyện
+
+Chọn một bộ dữ liệu của bạn để tính phổ công suất hoặc tự tương quan, nếu phương pháp phù hợp. Nếu dữ liệu chưa đáp ứng các giả định cần thiết, hãy tiếp tục hoàn thiện bài thuyết trình ngắn và bản tóm tắt mở rộng cuối khóa.
+
+---
+
+**Điều hướng:** [← Bài 3](./day3.html) · [Bài 5 — Nội suy và tái lập lưới →](./day5.html).

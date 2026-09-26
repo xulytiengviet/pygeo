@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="{{ page.description | default: site.description | escape }}">
+  <title>{% if page.title %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
+  <link rel="icon" type="image/png" href="{{ '/assets/logo.png' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/pygeo.css' | relative_url }}">
+</head>
+<body>
+  <a class="skip-link" href="#noi-dung">Chuyển đến nội dung chính</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="{{ '/' | relative_url }}" aria-label="PyGeo — về trang chủ">
+        <span class="brand-mark" aria-hidden="true">⌖</span>
+        <span><strong>PyGeo</strong><small>Python · Dữ liệu địa lý · Khoa học Trái Đất</small></span>
+      </a>
+      <a class="source-link" href="https://github.com/xulytiengviet/pygeo" target="_blank" rel="noopener noreferrer">Mã nguồn GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="Danh mục bài học">
+      <p class="sidebar-eyebrow">GIÁO TRÌNH THỰC HÀNH</p>
+      <nav aria-label="Chọn bài học">
+        {% for item in site.data.lessons %}
+        <a class="nav-link{% if page.url == item.url %} active{% endif %}" href="{{ item.url | relative_url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>
+          <span class="lesson-number">{{ item.number }}</span><span>{{ item.title }}</span>
+        </a>
+        {% endfor %}
+      </nav>
+      <div class="sidebar-note">
+        <strong>Nguyên tắc Việt hóa</strong>
+        <p>Giữ nguyên cú pháp Python, tên thư viện, công thức, đơn vị đo và nguồn dữ liệu gốc.</p>
+        <a href="{{ '/GLOSSARY_VI.html' | relative_url }}">Xem bảng thuật ngữ ↗</a>
+      </div>
+    </aside>
+    <main id="noi-dung" class="main-content" tabindex="-1">
+      <details class="mobile-nav">
+        <summary>☰ &nbsp;Danh mục bài học</summary>
+        <nav aria-label="Danh mục bài học trên điện thoại">
+          {% for item in site.data.lessons %}
+          <a href="{{ item.url | relative_url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.number }} · {{ item.title }}</a>
+          {% endfor %}
+        </nav>
+      </details>
+      <article class="article">{{ content }}</article>
+      <footer class="page-footer">
+        <span>PyGeo — Bản Việt hóa phục vụ học tập và nghiên cứu.</span>
+        <span>Giáo trình gốc: <a href="https://geomorphlab.github.io/medaes/" target="_blank" rel="noopener noreferrer">Andrew Gunn / Monash EAE</a>.</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

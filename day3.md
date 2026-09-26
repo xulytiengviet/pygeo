@@ -1,37 +1,74 @@
 ---
 layout: default
+title: "Bài 3 — Hồi quy và thống kê"
+description: Hồi quy tuyến tính, hệ số xác định, phân vị và phần dư.
 ---
 
-# Day 3
+# Bài 3 — Hồi quy và thống kê
 
-Today we will look at how to do linear regression and associated stastics!
+Bài học giới thiệu hồi quy tuyến tính, khớp hàm lũy thừa và một số công cụ thống kê giúp đánh giá mối quan hệ giữa các biến trong dữ liệu khoa học.
 
-## Line of best fit
+## 1. Đường hồi quy phù hợp nhất
 
-Linear regression is an important tool in understanding how sensitive a depedent variable is to an independent variable, or to look at how variables change with respect to one another. The NumPy function `polyfit` is one way to make a linear line of best fit in Python. See the documentation [here](https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html). 
+Hồi quy tuyến tính dùng để mô tả mối quan hệ giữa một biến phụ thuộc và một biến độc lập. Đây là công cụ giúp lượng hóa cách một đại lượng thay đổi theo đại lượng khác, nhưng bản thân hồi quy **không chứng minh quan hệ nhân quả**.
 
-In the notebook, we look at a linear best fit for some example data and we also use linear best fit to produce a powerlaw best fit.
+Trong NumPy, hàm <code>polyfit</code> có thể tìm đường thẳng phù hợp với dữ liệu:
 
-## R-Squared
+~~~python
+import numpy as np
 
-The R-squared parameter tells us how much of the variance in one variable can be explained by another variable. It is one parameter among many we can use to assess how strong the correlation is between variables. In the notebook we use the residuals from our lines of best fit to calculate the R-squared value, but this can be done automatically with functions like `linregress` in `scipy.stats`.
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2.0, 4.2, 5.8, 8.1, 9.9])
+he_so = np.polyfit(x, y, deg=1)
+gia_tri_du_doan = np.polyval(he_so, x)
+~~~
 
-## Percentiles
+Trong Notebook, chúng ta thực hành hồi quy tuyến tính trên dữ liệu mẫu và tận dụng phép biến đổi logarit để tìm **hàm lũy thừa** phù hợp. Xem [tài liệu <code>numpy.polyfit</code>](https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html).
 
-Box-and-whisker diagrams and cumulative distributions can be cast in terms of percentiles of a variable: "what percentage of my variable is below some value?" The NumPy function `percentile` is an easy way of calculating a percentile. We don't use it in the notebook, but you can plot a box-and-whisker diagram directly in matplotlib using the `boxplot` function.
+## 2. Hệ số xác định R²
 
-## Residual distributions
+Hệ số xác định R² biểu thị tỷ phần biến thiên của biến phụ thuộc được giải thích bởi mô hình, theo định nghĩa R² đang sử dụng. Đây là một trong nhiều chỉ số cần cân nhắc khi đánh giá độ phù hợp; chỉ số cao không tự động bảo đảm khả năng dự báo tốt.
 
-Examining the distribution of the residuals between actual data and your prediction is often a really useful way of deciding if your prediction is robust. Natural data often has some scatter in it due to measurement error, or maybe noise in the system you're studying, and so we can expect some error in your prediction even if its correct. The residuals should typically be normally distributed, and we can check if that's the case by comparing their probability density function (PDF) to a normal PDF found using their 1st (mean) and 2nd (variance) moments. This comparison can be quantified using a [Kolmogorov-Smirnoff test](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test). In the notebook we create these comparisons for two fits to our data.
+Trong bài thực hành, R² được tính từ phần dư của đường hồi quy. Bạn cũng có thể sử dụng <code>scipy.stats.linregress</code> cho hồi quy tuyến tính đơn; giá trị <code>rvalue</code> bình phương cho R² trong trường hợp tương ứng.
 
-## Other statistics
+## 3. Phân vị (percentile)
 
-There are MANY statistical tests, ways to fit data, and many ways to do each of them in Python; we can't cover everything and just scratched the surface of a handful of things. Other useful packages for doing all sorts of statistics are `scipy.stats` (link [here](https://docs.scipy.org/doc/scipy/reference/stats.html)) and `sklearn` (link [here](https://scikit-learn.org/stable/)). Please let your specific research areas guide you in figuring out which ones to use; hopefully this course gives you the confidence to explore things we haven't covered.
+Phân vị cho biết vị trí của một giá trị trong phân bố dữ liệu. Ví dụ, phân vị thứ 75 là ngưỡng mà khoảng 75% quan sát nằm không lớn hơn ngưỡng đó, tùy quy ước tính.
 
-## Third notebook
+NumPy cung cấp hàm <code>percentile</code>:
 
-See the third notebook example online [here](https://github.com/geomorphlab/medaes/blob/gh-pages/day3/day3.ipynb). Download the directory with the notebook and the example file directly [here](./day3/day3.zip).
+~~~python
+p25, p50, p75 = np.percentile(y, [25, 50, 75])
+~~~
 
-## Homework
+Có thể trực quan hóa phân vị bằng **biểu đồ hộp** (box plot) hoặc đồ thị phân bố tích lũy, chẳng hạn qua hàm <code>matplotlib.pyplot.boxplot</code>.
 
-Make an equivalent notebook to the one above where you ingest your own data and plot distributions and linear fits to your data (where appropriate).
+## 4. Phân bố phần dư
+
+**Phần dư** là hiệu giữa giá trị quan sát và giá trị mô hình dự đoán. Khảo sát phần dư giúp phát hiện các cấu trúc chưa được mô hình giải thích, ngoại lệ và dấu hiệu vi phạm giả định thống kê.
+
+Trong một số mô hình, giả định phần dư có phân bố gần chuẩn là quan trọng. Ta có thể so sánh hàm mật độ xác suất (PDF) của phần dư với phân bố chuẩn được ước lượng theo trung bình và phương sai. [Kiểm định Kolmogorov–Smirnov](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test) là một công cụ so sánh phân bố, nhưng cách sử dụng và hiệu chỉnh phụ thuộc việc các tham số phân bố có được ước lượng từ chính dữ liệu hay không.
+
+Notebook trình bày ví dụ đối chiếu phân bố phần dư của hai phép khớp đường cong.
+
+## 5. Công cụ thống kê mở rộng
+
+Các lĩnh vực nghiên cứu khác nhau cần những phép kiểm định và mô hình khác nhau. Bạn có thể tìm hiểu thêm:
+
+- [<code>scipy.stats</code>](https://docs.scipy.org/doc/scipy/reference/stats.html) — các phép kiểm định và phân bố xác suất.
+- [scikit-learn](https://scikit-learn.org/stable/) — mô hình học máy, đánh giá và quy trình xử lý dữ liệu.
+
+Hãy lựa chọn phương pháp dựa trên câu hỏi nghiên cứu, chất lượng dữ liệu và giả định của từng mô hình.
+
+## Notebook thực hành số 3
+
+- [Xem Notebook bài 3](https://github.com/xulytiengviet/pygeo/blob/gh-pages/day3/day3.ipynb).
+- [Tải gói dữ liệu và Notebook gốc](./day3/day3.zip).
+
+## Bài tập tự luyện
+
+Nhập dữ liệu của bạn, khảo sát phân bố và thử hồi quy tuyến tính hoặc hàm lũy thừa nếu phù hợp. Trình bày **hệ số hồi quy, R² và phần dư** kèm nhận xét về giả định mô hình.
+
+---
+
+**Điều hướng:** [← Bài 2](./day2.html) · [Bài 4 — Phân tích phổ và FFT →](./day4.html).

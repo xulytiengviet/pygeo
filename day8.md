@@ -1,27 +1,61 @@
 ---
 layout: default
+title: "Bài 8 — Hình minh họa cho công bố khoa học"
+description: Thiết kế hình nhiều ô và xuất ảnh theo yêu cầu tạp chí.
 ---
 
-# Day 8
+# Bài 8 — Thiết kế hình minh họa cho công bố khoa học
 
-Today we will look at how to make publication-ready figures!
+Bài này tập trung vào việc tạo những hình ảnh **rõ ràng, chính xác và đáp ứng yêu cầu xuất bản** từ dữ liệu và mã nguồn Python.
 
-## Elements
+## 1. Các thành phần của một hình khoa học
 
-The clarity of your writing can help readers understand your science better. The same goes for figures. Common advice is that you should be able to understand the point of an article by just looking at the figures, or just reading the text; you shouldn't need both. Making aesthetically pleasing figures probably makes people want to read your paper a little more too, and I imagine it also makes editors more likely to send your manuscript out for review. With a little effort, you can write code to produce figures that convey your science well, look good, and adhere to the formatting requirements of the journal you're submitting to.
+Cũng như bài viết, hình minh họa cần giúp người đọc nắm được câu hỏi và kết quả nghiên cứu. Một hình tốt có thể truyền tải thông tin ngay cả khi người đọc chỉ xem các trục, ký hiệu, chú giải và chú thích.
 
-Journals often have formatting requirements for; the font and its size, the lettering for the panels, the figure's file type, dimensions and resolution. We can write code to produce figures such that they adhere to all these requirements. Today we will use the [Nature formatting requirements](https://www.nature.com/documents/Final_guide_to_authors.pdf) as an example.
+Mỗi tạp chí có yêu cầu riêng về:
 
-## Implementation
+- Họ phông chữ, cỡ chữ và độ dày đường.
+- Kích thước hình một cột hoặc hai cột; bố cục các ô con.
+- Nhãn ô như (a), (b), (c); chú giải và thang màu.
+- Định dạng tệp, độ phân giải, cách xuất hình vector hoặc raster.
 
-We will use the `matplotlib` package we've been using this whole workshop to make an example publication-ready figure, but this time we will get a lot more precise with default arguments such that the end result isn't just a draft for our respective research group's eyes only. The code required to make a figure like this ends up being a lot longer, but once we've done it once, we can copy and adapt it with very little additional effort.
+Bài học lấy [hướng dẫn hình minh họa của Nature](https://www.nature.com/documents/Final_guide_to_authors.pdf) làm ví dụ. **Hãy kiểm tra quy định hiện hành của tạp chí đích trước khi nộp bài**, vì yêu cầu xuất bản có thể thay đổi.
 
-The first thing we do is sketch out how we want the figure to look on a piece of paper; this is our vision. Next we code it up. We have to think about where the elements of the figures sit with respect to the entire figure, and where elements of a given panel sit with respect to that panel. We want to declare variables for these locations in either reference frame (figure-wide or panel-specific) if they are in any way related to one another. This ensures that any alignment between elements is enforced.
+## 2. Triển khai bằng Matplotlib
 
-## Seventh notebook
+Chúng ta tiếp tục sử dụng Matplotlib nhưng kiểm soát kỹ hơn những tham số trình bày: kích thước, vị trí, căn chỉnh, trục tọa độ, độ phân giải và cách xuất ảnh.
 
-See the eighth notebook example online [here](https://github.com/geomorphlab/medaes/blob/gh-pages/day8/day8.ipynb). Download the directory with the notebook and the example file directly [here](./day8/day8.zip).
+Quy trình đề xuất:
 
-## Homework
+1. Phác thảo bố cục toàn hình trên giấy: số ô, tỷ lệ, thông điệp chính của từng ô.
+2. Xác định các yếu tố dùng chung như kiểu chữ, bảng màu, khoảng cách và hệ tọa độ.
+3. Tạo biến cho những vị trí có quan hệ với nhau để việc căn chỉnh được nhất quán.
+4. Viết mã vẽ từng ô, bổ sung nhãn và chú giải; kiểm tra khả năng đọc ở kích thước in thực tế.
+5. Xuất thử và kiểm tra tệp theo chuẩn của tạp chí.
 
-Make an equivalent notebook to the one above where you ingest your own data and plot it up nicely. Go ahead and work on your own lightning presentations and the extended abstract.
+Một số thiết lập cơ bản:
+
+~~~python
+import matplotlib.pyplot as plt
+
+plt.rcParams.update({
+    'font.size': 8,
+    'figure.dpi': 150,
+    'savefig.dpi': 300,
+})
+~~~
+
+Các giá trị trên chỉ là **minh họa**. Bản thực hành đi sâu vào việc kết hợp nhiều ô biểu đồ và định vị các thành phần một cách có kiểm soát.
+
+## Notebook thực hành số 8
+
+- [Xem Notebook bài 8](https://github.com/xulytiengviet/pygeo/blob/gh-pages/day8/day8.ipynb).
+- [Tải Notebook và dữ liệu gốc](./day8/day8.zip).
+
+## Bài tập tự luyện
+
+Tạo một hình chất lượng công bố từ dữ liệu của bạn. Kiểm tra nhãn trục, đơn vị đo, màu sắc, chú giải, kích thước và độ phân giải. Tiếp tục hoàn thiện bài thuyết trình ngắn và bản tóm tắt mở rộng cuối khóa.
+
+---
+
+**Điều hướng:** [← Bài 7](./day7.html) · [Bài 9 — GitHub, Zenodo và DOI →](./day9.html).

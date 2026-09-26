@@ -1,35 +1,55 @@
 ---
 layout: default
+title: "Bài 6 — Tối ưu hóa tham số"
+description: Hạ gradient, khớp mô hình và phân tích độ nhạy điều kiện ban đầu.
 ---
 
-# Day 6
+# Bài 6 — Tối ưu hóa tham số mô hình
 
-Today we will look at how to fit functions that cannot be cast as polynomials to data!
+Bài này tập trung vào cách khớp những hàm **không dễ đưa về dạng đa thức** với dữ liệu quan sát. Chúng ta tìm giá trị tham số sao cho mô hình giảm thiểu sai khác so với dữ liệu thực nghiệm.
 
-## Example lightning presentation
+## 1. Ví dụ thuyết trình ngắn
 
-Before covering today's material, I will give a lightning presentation example for you. If you want a copy of my slides to review them while creating your own presentations, please email me.
+Trong khóa học gốc, giảng viên trình bày một bài thuyết trình ngắn mẫu trước khi chuyển sang nội dung tối ưu hóa. Người học có thể sử dụng cấu trúc bài này làm tham khảo khi chuẩn bị báo cáo về dữ liệu nghiên cứu của mình.
 
-## Gradient descent
+## 2. Hạ gradient (gradient descent)
 
-Imagine we have a function that has two free parameters, and we want to adjust the free parameters of this function such that it best predicts some data we have. As we choose different values for these free parameters, the corresponding residual between the predicted value from the function and the actual value from our data can change. Think now of a landscape where the the x and y coordinates are the free parameters, and elevation is the value of that residual. Our aim is to find the lowest point in that landscape because it corresponds to where the difference between our prediction and the data is minimized. There are lots of ways of finding that mimimum; gradient descent is one of them (and there are lots of different ways of doing gradient descent!).
+Giả sử mô hình có hai tham số tự do, cần điều chỉnh để dự đoán tốt nhất dữ liệu quan sát. Với mỗi cặp giá trị tham số, ta có thể tính một **hàm mục tiêu** đo độ sai khác giữa mô hình và dữ liệu.
 
-Often we know there is an equation that describes the relationship between variables we observe in our science, but we also have the issue that all the variables in that equation aren't observed and often need to be assumed. We can use gradient descent as a tool to calculate values for those unknown variables. Sometimes finding values for those unknown variables is the whole point of a project, othertimes it is a means to an end.
+Hãy hình dung một bề mặt mà trục ngang biểu thị hai tham số và độ cao biểu thị giá trị hàm mục tiêu. Mục tiêu là tìm một điểm thấp nhất trong miền khảo sát, tương ứng với sai số nhỏ nhất theo tiêu chí đã chọn.
 
-Today we will use the package `scipy` and it's sub-package `optimize`, but there are other ways to do this!
+**Hạ gradient** là một họ phương pháp tối ưu sử dụng thông tin hướng biến thiên của hàm mục tiêu để cập nhật tham số. Trong bài thực hành, chúng ta sử dụng <code>scipy.optimize</code> và xây dựng những hàm Python cần thiết để tìm hai tham số tự do từ dữ liệu mẫu.
 
-In the notebook, we look at finding two free paramters for a function that describes some example data, and we define a set of Python functions that allow us to find it through gradient descent.
+~~~python
+from scipy.optimize import minimize
 
-## Sensitivity to initial conditions
+def ham_muc_tieu(tham_so):
+    x, y = tham_so
+    return (x - 2)**2 + (y + 1)**2
 
-This landscape described above might not have one watershed within the range of values you expect the free parameters to have. Simple gradient descent has a hard time finding the global minimum of cases like this, instead it finds the local minimum of the watershed you start your search from (the initial condition). It is good practice to check that your fitted values for free parameters aren't too sensitive to the initial values.
+ket_qua = minimize(ham_muc_tieu, x0=[0, 0])
+print(ket_qua.x)
+~~~
 
-Here we do a sensitivity study for the initial condition to our gradient descent to ensure we have found the global minimum of our residual function. See the notebook for the example.
+Đây là ví dụ tối giản minh họa bài toán tối ưu. Notebook của khóa học sử dụng một mô hình và bộ dữ liệu khoa học thực tế hơn.
 
-## Sixth notebook
+## 3. Độ nhạy đối với điều kiện ban đầu
 
-See the sixth notebook example online [here](https://github.com/geomorphlab/medaes/blob/gh-pages/day6/day6.ipynb). Download the directory with the notebook and the example file directly [here](./day6/day6.zip).
+Bề mặt hàm mục tiêu có thể chứa nhiều cực tiểu cục bộ. Một thuật toán tối ưu cục bộ có thể hội tụ về các nghiệm khác nhau nếu bắt đầu từ những điểm khác nhau; cực tiểu tìm được không nhất thiết là **cực tiểu toàn cục**.
 
-## Homework
+Vì vậy, một bước kiểm tra quan trọng là chạy tối ưu từ **nhiều bộ tham số khởi tạo**, sau đó so sánh nghiệm thu được và giá trị hàm mục tiêu. Chúng ta sẽ thực hiện phân tích độ nhạy trong Notebook để kiểm tra độ ổn định của kết quả.
 
-Make an equivalent notebook to the one above where you ingest your own data and fit whatever function is appropriate. Go ahead and work on your own lightning presentations and the extended abstract.
+Trong nghiên cứu thực tế, cần cân nhắc thêm miền giá trị hợp lý về mặt vật lý, khả năng xác định tham số và độ bất định của dữ liệu.
+
+## Notebook thực hành số 6
+
+- [Xem Notebook bài 6](https://github.com/xulytiengviet/pygeo/blob/gh-pages/day6/day6.ipynb).
+- [Tải Notebook và dữ liệu gốc](./day6/day6.zip).
+
+## Bài tập tự luyện
+
+Chọn một hàm có ý nghĩa với bộ dữ liệu của bạn, xây dựng hàm mục tiêu và thử tối ưu tham số. Thực hiện ít nhất vài lần chạy từ những điều kiện ban đầu khác nhau, rồi trình bày mức độ ổn định của nghiệm. Tiếp tục hoàn thiện bài thuyết trình và bản tóm tắt mở rộng cuối khóa.
+
+---
+
+**Điều hướng:** [← Bài 5](./day5.html) · [Bài 7 — Trực quan hóa dữ liệu địa hóa →](./day7.html).

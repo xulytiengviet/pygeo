@@ -1,2 +1,7 @@
 theme: jekyll-theme-minimal
-logo: assets/logo.png
+title: "PyGeo | Phân tích dữ liệu khoa học Trái Đất bằng Python"
+description: "Giáo trình thực hành Python cho dữ liệu không gian, khoa học Trái Đất và trực quan hóa khoa học."
+lang: vi-VN
+url: "https://xulytiengviet.github.io"
+baseurl: "/pygeo"
+markdown: kramdown
